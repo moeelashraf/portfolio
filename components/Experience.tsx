@@ -40,7 +40,7 @@ export function Experience() {
                       type: "spring",
                       stiffness: 200,
                     }}
-                    viewport={{ once: true }}
+                    viewport={{ once: false, amount: 0.6 }}
                     className="absolute left-0 top-2 hidden h-6 w-6 items-center justify-center rounded-full border border-ink/15 bg-paper-50 md:flex"
                   >
                     <span className="h-2 w-2 rounded-full bg-accent" />
@@ -75,7 +75,7 @@ export function Experience() {
                                 key={j}
                                 initial={{ opacity: 0, x: -8 }}
                                 whileInView={{ opacity: 1, x: 0 }}
-                                viewport={{ once: true }}
+                                viewport={{ once: false, amount: 0.4 }}
                                 transition={{
                                   delay: 0.1 + j * 0.05,
                                   duration: 0.5,

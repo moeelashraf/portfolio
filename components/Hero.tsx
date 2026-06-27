@@ -138,7 +138,7 @@ export function Hero() {
                 fill
                 priority
                 sizes="(max-width: 768px) 80vw, 420px"
-                className="object-cover"
+                className="object-cover object-[center_28%]"
               />
             </div>
             <motion.div

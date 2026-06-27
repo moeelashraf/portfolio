@@ -1,7 +1,7 @@
 // Deployed to a GitHub Pages project site at https://<user>.github.io/moeel/,
 // so the app is served from the "/moeel" sub-path. Override with the
 // PAGES_BASE_PATH env var if the repo is ever renamed or moved to a root site.
-const basePath = process.env.PAGES_BASE_PATH ?? "/moeel";
+const basePath = process.env.PAGES_BASE_PATH ?? "/portfolio";
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {

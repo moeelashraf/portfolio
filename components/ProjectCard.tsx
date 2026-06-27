@@ -55,7 +55,7 @@ export function ProjectCard({
             </span>
             <div className="flex-1">
               <div className="flex flex-col gap-1.5 sm:flex-row sm:items-baseline sm:gap-4">
-                <h3 className="heading-section text-3xl sm:text-4xl md:text-5xl lg:text-6xl">
+                <h3 className="heading-section text-3xl text-ink transition-colors duration-300 group-hover:text-accent sm:text-4xl md:text-5xl lg:text-6xl">
                   {project.title}
                 </h3>
                 <span className="text-sm text-ink-faint">{project.period}</span>
@@ -76,18 +76,28 @@ export function ProjectCard({
             </div>
           </div>
 
-          <motion.span
-            animate={{ rotate: open ? 45 : 0 }}
-            transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-            className={clsx(
-              "flex h-12 w-12 shrink-0 items-center justify-center rounded-full border transition-colors",
-              open
-                ? "border-accent bg-accent text-paper-50"
-                : "border-ink/15 bg-paper-50 text-ink group-hover:border-ink/30"
-            )}
-          >
-            <Plus size={20} />
-          </motion.span>
+          <span className="flex shrink-0 items-center gap-3">
+            <span
+              className={clsx(
+                "text-xs uppercase tracking-[0.2em] transition-colors duration-300",
+                open ? "text-accent" : "text-ink-faint group-hover:text-ink"
+              )}
+            >
+              {open ? "Close" : "Expand"}
+            </span>
+            <motion.span
+              animate={{ rotate: open ? 45 : 0 }}
+              transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+              className={clsx(
+                "flex h-12 w-12 items-center justify-center rounded-full border transition-colors duration-300",
+                open
+                  ? "border-accent bg-accent text-paper-50"
+                  : "border-ink/15 bg-paper-50 text-ink group-hover:border-accent group-hover:bg-accent group-hover:text-paper-50"
+              )}
+            >
+              <Plus size={20} />
+            </motion.span>
+          </span>
         </button>
 
         <AnimatePresence initial={false}>
@@ -229,7 +239,7 @@ function ProjectGallery({
               key={`${img.src}-${i}`}
               initial={{ opacity: 0, y: reduce ? 0 : 24 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.2 }}
+              viewport={{ once: false, amount: 0.2 }}
               transition={{
                 delay: i * 0.08,
                 duration: 0.7,

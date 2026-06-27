@@ -84,28 +84,33 @@ export function TechBadge({
   const { Icon, color, label } = entry;
   const iconSize = size === "sm" ? 17 : 19;
 
-  // Icon-only badge: reveal the name in a tooltip on hover.
+  // Icon-only badge: a circle that smoothly expands into a pill revealing the
+  // name on hover. The label width animates via a grid column track so the
+  // transition stays smooth without measuring text.
   if (!showLabel) {
     return (
       <span
         className={clsx(
-          "group relative inline-flex items-center justify-center rounded-full border border-ink/10 bg-paper-50/80 backdrop-blur-sm transition-all duration-300 hover:-translate-y-0.5 hover:border-ink/20 hover:shadow-soft",
-          size === "sm" ? "h-9 w-9" : "h-10 w-10",
+          "group inline-flex items-center rounded-full border border-ink/10 bg-paper-50/80 backdrop-blur-sm transition-[box-shadow,transform,background-color,border-color] duration-300 hover:-translate-y-0.5 hover:border-ink/25 hover:bg-paper-50 hover:shadow-soft",
+          size === "sm" ? "h-9 pl-[7px] pr-[7px] hover:pr-3" : "h-10 pl-2 pr-2 hover:pr-3.5",
           className
         )}
         title={label}
       >
-        <Icon
-          className="transition-colors duration-300"
-          style={{ color }}
-          size={iconSize}
-          aria-hidden
-        />
-        <span
-          role="tooltip"
-          className="pointer-events-none absolute -top-9 left-1/2 z-10 -translate-x-1/2 translate-y-1 whitespace-nowrap rounded-md bg-ink px-2.5 py-1 text-xs font-medium text-paper-50 opacity-0 shadow-soft transition-all duration-200 group-hover:translate-y-0 group-hover:opacity-100"
-        >
-          {label}
+        <span className="flex shrink-0 items-center justify-center">
+          <Icon
+            className="transition-colors duration-300"
+            style={{ color }}
+            size={iconSize}
+            aria-hidden
+          />
+        </span>
+        <span className="grid grid-cols-[0fr] transition-[grid-template-columns] duration-300 ease-out group-hover:grid-cols-[1fr]">
+          <span className="overflow-hidden">
+            <span className="block whitespace-nowrap pl-2 pr-0.5 font-sans text-xs font-medium text-ink-muted opacity-0 transition-opacity duration-200 group-hover:opacity-100 group-hover:delay-100">
+              {label}
+            </span>
+          </span>
         </span>
       </span>
     );

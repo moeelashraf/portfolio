@@ -26,7 +26,6 @@ export function Projects() {
             key={project.id}
             project={project}
             index={i}
-            defaultOpen={i === 0}
             onImageClick={setLightbox}
           />
         ))}

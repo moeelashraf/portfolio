@@ -28,12 +28,6 @@ const SOCIALS = [
     Icon: Github,
   },
   {
-    label: "WhatsApp",
-    handle: "+92 333 461 1172",
-    href: "https://wa.me/923334611172",
-    Icon: SiWhatsapp,
-  },
-  {
     label: "Email",
     handle: "moeelashraf@gmail.com",
     href: "mailto:moeelashraf@gmail.com",
@@ -98,9 +92,9 @@ export function Contact() {
               href="https://wa.me/923334611172"
               target="_blank"
               rel="noopener noreferrer"
-              className="group inline-flex items-center gap-2 rounded-full bg-[#25D366] px-6 py-3.5 text-sm font-medium text-white transition-all duration-300 hover:bg-[#1da851]"
+              className="group inline-flex items-center gap-2 rounded-full border border-ink/15 bg-paper-50/70 px-6 py-3.5 text-sm font-medium text-ink backdrop-blur transition-all duration-300 hover:border-ink/30 hover:bg-paper-50"
             >
-              <SiWhatsapp size={16} />
+              <SiWhatsapp size={16} className="text-[#3f8f5f]" />
               Message on WhatsApp
             </a>
             <a
@@ -114,7 +108,7 @@ export function Contact() {
           </div>
         </Reveal>
 
-        <div className="mt-20 grid grid-cols-1 gap-px overflow-hidden rounded-2xl border border-ink/10 bg-ink/10 sm:grid-cols-2 lg:grid-cols-5">
+        <div className="mt-20 grid grid-cols-1 gap-px overflow-hidden rounded-2xl border border-ink/10 bg-ink/10 sm:grid-cols-2 lg:grid-cols-4">
           {SOCIALS.map((s, i) => (
             <motion.a
               key={s.label}
@@ -123,19 +117,19 @@ export function Contact() {
               rel={s.href.startsWith("http") ? "noopener noreferrer" : undefined}
               initial={{ opacity: 0, y: 16 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
+              viewport={{ once: false, amount: 0.3 }}
               transition={{ delay: 0.1 + i * 0.08, duration: 0.6 }}
-              className="group relative flex items-center justify-between gap-4 bg-paper-100 p-6 transition-colors duration-300 hover:bg-paper-50 md:p-8"
+              className="group relative flex items-center justify-between gap-3 bg-paper-100 p-6 transition-colors duration-300 hover:bg-paper-50 md:p-7"
             >
-              <div>
+              <div className="min-w-0">
                 <p className="text-xs uppercase tracking-[0.22em] text-ink-faint">
                   {s.label}
                 </p>
-                <p className="mt-2 font-serif text-base text-ink md:text-lg">
+                <p className="mt-2 truncate font-serif text-base text-ink">
                   {s.handle}
                 </p>
               </div>
-              <span className="flex h-10 w-10 items-center justify-center rounded-full border border-ink/10 text-ink-muted transition-all duration-300 group-hover:border-accent group-hover:bg-accent group-hover:text-paper-50">
+              <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-ink/10 text-ink-muted transition-all duration-300 group-hover:border-accent group-hover:bg-accent group-hover:text-paper-50">
                 <s.Icon size={16} />
               </span>
             </motion.a>

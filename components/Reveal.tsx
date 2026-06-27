@@ -17,7 +17,7 @@ export function Reveal({
   delay = 0,
   y = 24,
   className,
-  once = true,
+  once = false,
   amount = 0.2,
 }: RevealProps) {
   const reduce = useReducedMotion();
@@ -61,7 +61,7 @@ export function Stagger({
   delay = 0,
   stagger = 0.08,
   className,
-  once = true,
+  once = false,
 }: StaggerProps) {
   return (
     <motion.div

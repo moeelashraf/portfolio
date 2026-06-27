@@ -73,7 +73,7 @@ export function About() {
                     BS Computer Science
                     <br />
                     <span className="text-sm text-ink-muted">
-                      Forman Christian College
+                      Forman Christian College University
                     </span>
                   </p>
                 </div>

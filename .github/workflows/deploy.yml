@@ -1,0 +1,74 @@
+name: Deploy portfolio to GitHub Pages
+
+on:
+  # Run on every push to the default branch.
+  push:
+    branches: [main]
+  # Allow manual runs from the Actions tab.
+  workflow_dispatch:
+
+# Permissions needed for the official Pages deployment.
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Only one deployment at a time; newer pushes cancel in-progress runs.
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Compute base path
+        id: basepath
+        shell: bash
+        run: |
+          repo="${{ github.event.repository.name }}"
+          owner="${{ github.repository_owner }}"
+          # A user/org site (<owner>.github.io) is served from the root and
+          # needs no base path. Any other repo is a project site served from
+          # https://<owner>.github.io/<repo>/, so it needs "/<repo>".
+          if [ "$(echo "$repo" | tr '[:upper:]' '[:lower:]')" = "$(echo "$owner" | tr '[:upper:]' '[:lower:]').github.io" ]; then
+            echo "value=" >> "$GITHUB_OUTPUT"
+          else
+            echo "value=/$repo" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build static export
+        run: npm run build
+        env:
+          PAGES_BASE_PATH: ${{ steps.basepath.outputs.value }}
+
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: out
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
