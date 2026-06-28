@@ -21,32 +21,10 @@ export type ProjectLink = {
   type: "github" | "external";
 };
 
-/** Keys map to icons in components/IconLibrary.tsx (sourced from lucide-react). */
-export type LucideIconKey =
-  | "layout-dashboard"
-  | "bell"
-  | "calendar"
-  | "users"
-  | "shield"
-  | "bar-chart"
-  | "leaf"
-  | "sprout"
-  | "tractor"
-  | "sun"
-  | "droplet"
-  | "heart"
-  | "code"
-  | "terminal"
-  | "book-open"
-  | "play"
-  | "graduation-cap"
-  | "package"
-  | "camera"
-  | "map-pin"
-  | "flower"
-  | "search"
-  | "smartphone"
-  | "star";
+/** Identifies which real icon library renders the representative glyphs.
+ *  Each set's glyphs live in components/IconLibrary.tsx, sourced from the
+ *  matching package (lucide-react or react-icons sub-modules). */
+export type IconSet = "lucide" | "fontawesome" | "heroicons" | "ionicons";
 
 export type DesignSystem = {
   /** Exactly 4 swatches sampled from the product UI */
@@ -54,8 +32,9 @@ export type DesignSystem = {
   /** Two primary typefaces: typically a display and a body face.
    *  `face` selects the web font used to render the showcase text. */
   fonts: { role: string; name: string; face: FontFace }[];
-  /** The icon set used on the project, plus a few representative glyphs. */
-  iconLibrary: { name: string; icons: LucideIconKey[] };
+  /** The icon set used on the project. The display name and the actual glyphs
+   *  shown both come from this library. */
+  iconLibrary: { name: string; set: IconSet };
 };
 
 /** Web fonts available to render the typography showcase. */
@@ -109,10 +88,7 @@ export const PROJECTS: Project[] = [
         { role: "Display", name: "Fraunces", face: "fraunces" },
         { role: "Body", name: "Inter", face: "inter" },
       ],
-      iconLibrary: {
-        name: "Lucide",
-        icons: ["layout-dashboard", "bell", "calendar", "users", "shield"],
-      },
+      iconLibrary: { name: "Lucide", set: "lucide" },
     },
     images: [
       {
@@ -175,10 +151,7 @@ export const PROJECTS: Project[] = [
         { role: "Display", name: "Playfair Display", face: "playfair" },
         { role: "Body", name: "Inter", face: "inter" },
       ],
-      iconLibrary: {
-        name: "Font Awesome",
-        icons: ["leaf", "sprout", "tractor", "sun", "droplet"],
-      },
+      iconLibrary: { name: "Font Awesome", set: "fontawesome" },
     },
     images: [
       {
@@ -226,10 +199,7 @@ export const PROJECTS: Project[] = [
         { role: "Heading", name: "Inter", face: "inter" },
         { role: "Code", name: "JetBrains Mono", face: "jetbrains" },
       ],
-      iconLibrary: {
-        name: "Heroicons",
-        icons: ["code", "terminal", "book-open", "play", "graduation-cap"],
-      },
+      iconLibrary: { name: "Heroicons", set: "heroicons" },
     },
     images: [
       {
@@ -268,10 +238,7 @@ export const PROJECTS: Project[] = [
         { role: "Display", name: "Poppins", face: "poppins" },
         { role: "Body", name: "Roboto", face: "roboto" },
       ],
-      iconLibrary: {
-        name: "Ionicons",
-        icons: ["flower", "camera", "map-pin", "search", "heart"],
-      },
+      iconLibrary: { name: "Ionicons", set: "ionicons" },
     },
     links: [
       {

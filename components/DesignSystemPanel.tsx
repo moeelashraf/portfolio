@@ -3,7 +3,7 @@
 import { motion } from "framer-motion";
 
 import type { DesignSystem, FontFace } from "@/lib/projects";
-import { LUCIDE_MAP } from "./IconLibrary";
+import { ICON_SETS } from "./IconLibrary";
 
 const reveal = {
   hidden: { opacity: 0, y: 10 },
@@ -90,21 +90,18 @@ export function DesignSystemPanel({ system }: { system: DesignSystem }) {
           </p>
         </div>
         <div className="mt-3 flex flex-1 items-center justify-between gap-2">
-          {system.iconLibrary.icons.map((key, i) => {
-            const Icon = LUCIDE_MAP[key];
-            return (
-              <motion.span
-                key={key}
-                variants={reveal}
-                custom={i + 4}
-                initial="hidden"
-                animate="show"
-                className="flex h-11 flex-1 items-center justify-center rounded-xl border border-ink/10 bg-paper-100/40 text-ink-muted transition-colors duration-300 hover:border-ink/20 hover:bg-paper-50 hover:text-ink"
-              >
-                <Icon size={20} strokeWidth={1.6} aria-hidden />
-              </motion.span>
-            );
-          })}
+          {ICON_SETS[system.iconLibrary.set].map((Icon, i) => (
+            <motion.span
+              key={i}
+              variants={reveal}
+              custom={i + 4}
+              initial="hidden"
+              animate="show"
+              className="flex h-11 flex-1 items-center justify-center rounded-xl border border-ink/10 bg-paper-100/40 text-ink-muted transition-colors duration-300 hover:border-ink/20 hover:bg-paper-50 hover:text-ink"
+            >
+              <Icon size={20} aria-hidden />
+            </motion.span>
+          ))}
         </div>
       </div>
     </div>

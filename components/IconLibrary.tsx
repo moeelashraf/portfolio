@@ -1,58 +1,53 @@
 "use client";
 
 import {
-  LayoutDashboard,
-  Bell,
-  Calendar,
-  Users,
-  Shield,
-  BarChart3,
-  Leaf,
-  Sprout,
-  Tractor,
-  Sun,
-  Droplet,
-  Heart,
-  Code,
-  Terminal,
-  BookOpen,
-  Play,
-  GraduationCap,
-  Package,
-  Camera,
-  MapPin,
-  Flower2,
-  Search,
-  Smartphone,
-  Star,
-  type LucideIcon,
-} from "lucide-react";
+  LuLayoutDashboard,
+  LuBell,
+  LuCalendar,
+  LuUsers,
+  LuShield,
+} from "react-icons/lu";
+import {
+  FaLeaf,
+  FaSeedling,
+  FaTractor,
+  FaSun,
+  FaDroplet,
+} from "react-icons/fa6";
+import {
+  HiOutlineCodeBracket,
+  HiOutlineCommandLine,
+  HiOutlineBookOpen,
+  HiOutlinePlay,
+  HiOutlineAcademicCap,
+} from "react-icons/hi2";
+import {
+  IoFlowerOutline,
+  IoCameraOutline,
+  IoLocationOutline,
+  IoSearchOutline,
+  IoHeartOutline,
+} from "react-icons/io5";
+import { type IconType } from "react-icons";
 
-import type { LucideIconKey } from "@/lib/projects";
+import type { IconSet } from "@/lib/projects";
 
-export const LUCIDE_MAP: Record<LucideIconKey, LucideIcon> = {
-  "layout-dashboard": LayoutDashboard,
-  bell: Bell,
-  calendar: Calendar,
-  users: Users,
-  shield: Shield,
-  "bar-chart": BarChart3,
-  leaf: Leaf,
-  sprout: Sprout,
-  tractor: Tractor,
-  sun: Sun,
-  droplet: Droplet,
-  heart: Heart,
-  code: Code,
-  terminal: Terminal,
-  "book-open": BookOpen,
-  play: Play,
-  "graduation-cap": GraduationCap,
-  package: Package,
-  camera: Camera,
-  "map-pin": MapPin,
-  flower: Flower2,
-  search: Search,
-  smartphone: Smartphone,
-  star: Star,
+/** Five representative glyphs per library, drawn from that library's package. */
+export const ICON_SETS: Record<IconSet, IconType[]> = {
+  lucide: [LuLayoutDashboard, LuBell, LuCalendar, LuUsers, LuShield],
+  fontawesome: [FaLeaf, FaSeedling, FaTractor, FaSun, FaDroplet],
+  heroicons: [
+    HiOutlineCodeBracket,
+    HiOutlineCommandLine,
+    HiOutlineBookOpen,
+    HiOutlinePlay,
+    HiOutlineAcademicCap,
+  ],
+  ionicons: [
+    IoFlowerOutline,
+    IoCameraOutline,
+    IoLocationOutline,
+    IoSearchOutline,
+    IoHeartOutline,
+  ],
 };

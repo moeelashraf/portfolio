@@ -7,6 +7,7 @@ import {
 } from "framer-motion";
 import Image from "next/image";
 import { ArrowUpRight, Github, Plus } from "lucide-react";
+import { useLayoutEffect, useRef } from "react";
 import clsx from "clsx";
 
 import type { Project, ProjectImage } from "@/lib/projects";
@@ -33,9 +34,45 @@ export function ProjectCard({
 }: ProjectCardProps) {
   const open = isOpen;
   const reduce = useReducedMotion();
+  const cardRef = useRef<HTMLElement>(null);
+  // Viewport-relative top of this card captured at click time. Used to keep the
+  // card visually anchored while a sibling above it collapses (animated), which
+  // would otherwise shift this card and displace the viewport.
+  const anchorTop = useRef<number | null>(null);
+
+  const handleToggle = () => {
+    if (cardRef.current) {
+      anchorTop.current = cardRef.current.getBoundingClientRect().top;
+    }
+    onToggle();
+  };
+
+  // A sibling card's collapse is animated (height tween), so its effect on our
+  // position plays out over several frames. Re-anchor on each frame for the
+  // duration of the animation so this card stays put under the cursor.
+  useLayoutEffect(() => {
+    if (anchorTop.current === null || !cardRef.current) return;
+    const target = anchorTop.current;
+    anchorTop.current = null;
+
+    let raf = 0;
+    const start = performance.now();
+    const correct = (now: number) => {
+      if (!cardRef.current) return;
+      const delta = cardRef.current.getBoundingClientRect().top - target;
+      if (Math.abs(delta) > 0.5) {
+        window.scrollBy({ top: delta, behavior: "auto" });
+      }
+      // Keep correcting until the sibling collapse/expand tweens settle.
+      if (now - start < 650) raf = requestAnimationFrame(correct);
+    };
+    raf = requestAnimationFrame(correct);
+    return () => cancelAnimationFrame(raf);
+  }, [open]);
 
   return (
     <article
+      ref={cardRef}
       className={clsx(
         "group relative border-t border-ink/10 py-10 transition-colors duration-500 md:py-14",
         open && "bg-paper-200/40"
@@ -43,7 +80,7 @@ export function ProjectCard({
     >
         <button
           type="button"
-          onClick={onToggle}
+          onClick={handleToggle}
           className="container-narrow flex w-full flex-col items-start gap-6 text-left md:flex-row md:items-center md:justify-between md:gap-12"
           aria-expanded={open}
         >
