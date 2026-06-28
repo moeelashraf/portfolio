@@ -8,6 +8,7 @@ import { SectionLabel } from "./SectionLabel";
 
 export function Projects() {
   const [lightbox, setLightbox] = useState<ProjectImage | null>(null);
+  const [openId, setOpenId] = useState<string | null>(null);
 
   return (
     <section id="work" className="relative py-24 md:py-32">
@@ -26,6 +27,10 @@ export function Projects() {
             key={project.id}
             project={project}
             index={i}
+            isOpen={openId === project.id}
+            onToggle={() =>
+              setOpenId((prev) => (prev === project.id ? null : project.id))
+            }
             onImageClick={setLightbox}
           />
         ))}

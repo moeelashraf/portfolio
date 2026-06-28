@@ -1,5 +1,6 @@
-// next.config.js
-const basePath = process.env.PAGES_BASE_PATH ?? "/portfolio";
+// Local dev: no base path → site at http://localhost:3000/
+// GitHub Pages: workflow sets PAGES_BASE_PATH=/moeel → site at .../moeel/
+const basePath = process.env.PAGES_BASE_PATH ?? "";
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {

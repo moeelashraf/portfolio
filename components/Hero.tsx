@@ -2,8 +2,9 @@
 
 import { motion, useReducedMotion } from "framer-motion";
 import Image from "next/image";
-import { ArrowDown, ArrowRight, MapPin } from "lucide-react";
+import { ArrowDown, ArrowRight, MapPin, Mail } from "lucide-react";
 import { asset } from "@/lib/basePath";
+import { AnimatedButton } from "./AnimatedButton";
 
 const NAME_WORDS = ["Moeel", "Ashraf."];
 const TAGLINE = [
@@ -90,23 +91,24 @@ export function Hero() {
             transition={{ duration: 0.6, delay: 1.1 }}
             className="mt-10 flex flex-wrap items-center gap-3"
           >
-            <a
+            <AnimatedButton
               href="#work"
-              className="group inline-flex items-center gap-2 rounded-full bg-ink px-6 py-3.5 text-sm font-medium text-paper-50 transition-all duration-300 hover:bg-accent"
+              variant="solid"
+              icon={<ArrowRight size={16} />}
+              iconMotion="right"
+              iconSide="right"
             >
               See selected work
-              <ArrowRight
-                size={16}
-                className="transition-transform duration-300 group-hover:translate-x-1"
-              />
-            </a>
-            <a
-              href={asset("/moeel-resume.pdf")}
-              download
-              className="inline-flex items-center gap-2 rounded-full border border-ink/15 bg-paper-50/60 px-6 py-3.5 text-sm font-medium text-ink backdrop-blur transition-all duration-300 hover:border-ink/30 hover:bg-paper-50"
+            </AnimatedButton>
+            <AnimatedButton
+              href="#contact"
+              variant="outline"
+              icon={<Mail size={16} />}
+              iconMotion="upRight"
+              iconSide="left"
             >
-              Download CV
-            </a>
+              Get in contact
+            </AnimatedButton>
           </motion.div>
 
           <motion.div
@@ -117,8 +119,6 @@ export function Hero() {
           >
             <MapPin size={14} />
             Lahore, Pakistan
-            <span className="mx-2">·</span>
-            <span>Open to remote roles worldwide</span>
           </motion.div>
         </div>
 

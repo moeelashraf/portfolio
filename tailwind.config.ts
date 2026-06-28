@@ -32,6 +32,10 @@ const config: Config = {
       fontFamily: {
         serif: ["var(--font-serif)", "Georgia", "serif"],
         sans: ["var(--font-sans)", "system-ui", "sans-serif"],
+        playfair: ["var(--font-playfair)", "Georgia", "serif"],
+        jetbrains: ["var(--font-jetbrains)", "monospace"],
+        poppins: ["var(--font-poppins)", "system-ui", "sans-serif"],
+        roboto: ["var(--font-roboto)", "system-ui", "sans-serif"],
       },
       letterSpacing: {
         "tightest": "-0.04em",

@@ -12,30 +12,37 @@ import {
 } from "lucide-react";
 import { SiWhatsapp } from "react-icons/si";
 import { Reveal } from "./Reveal";
+import { AnimatedButton } from "./AnimatedButton";
 import { asset } from "@/lib/basePath";
 
+// `parts` splits the handle so it can wrap at a clean point on desktop (a
+// hidden-on-mobile <br/> between the two parts). On mobile it flows as one line.
 const SOCIALS = [
   {
     label: "LinkedIn",
     handle: "linkedin.com/in/moeel",
+    parts: ["linkedin.com", "/in/moeel"],
     href: "https://linkedin.com/in/moeel",
     Icon: Linkedin,
   },
   {
     label: "GitHub",
     handle: "github.com/moeelashraf",
+    parts: ["github.com/", "moeelashraf"],
     href: "https://github.com/moeelashraf",
     Icon: Github,
   },
   {
     label: "Email",
     handle: "moeelashraf@gmail.com",
+    parts: ["moeelashraf", "@gmail.com"],
     href: "mailto:moeelashraf@gmail.com",
     Icon: Mail,
   },
   {
     label: "Phone",
     handle: "+92 333 461 1172",
+    parts: ["+92 333 461 1172"],
     href: "tel:+923334611172",
     Icon: Phone,
   },
@@ -78,33 +85,35 @@ export function Contact() {
 
         <Reveal delay={0.2}>
           <div className="mt-10 flex flex-wrap items-center gap-3">
-            <a
+            <AnimatedButton
               href="mailto:moeelashraf@gmail.com"
-              className="group inline-flex items-center gap-2 rounded-full bg-ink px-6 py-3.5 text-sm font-medium text-paper-50 transition-all duration-300 hover:bg-accent"
+              variant="solid"
+              icon={<ArrowUpRight size={16} />}
+              iconMotion="upRight"
+              iconSide="right"
             >
               moeelashraf@gmail.com
-              <ArrowUpRight
-                size={16}
-                className="transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
-              />
-            </a>
-            <a
+            </AnimatedButton>
+            <AnimatedButton
               href="https://wa.me/923334611172"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group inline-flex items-center gap-2 rounded-full border border-ink/15 bg-paper-50/70 px-6 py-3.5 text-sm font-medium text-ink backdrop-blur transition-all duration-300 hover:border-ink/30 hover:bg-paper-50"
+              external
+              variant="outline"
+              icon={<SiWhatsapp size={16} className="text-[#3f8f5f]" />}
+              iconMotion="pop"
+              iconSide="left"
             >
-              <SiWhatsapp size={16} className="text-[#3f8f5f]" />
               Message on WhatsApp
-            </a>
-            <a
+            </AnimatedButton>
+            <AnimatedButton
               href={asset("/moeel-resume.pdf")}
               download
-              className="group inline-flex items-center gap-2 rounded-full border border-ink/15 bg-paper-50/70 px-6 py-3.5 text-sm font-medium text-ink backdrop-blur transition-all duration-300 hover:border-ink/30 hover:bg-paper-50"
+              variant="outline"
+              icon={<Download size={16} />}
+              iconMotion="down"
+              iconSide="left"
             >
-              <Download size={14} />
               Download CV (PDF)
-            </a>
+            </AnimatedButton>
           </div>
         </Reveal>
 
@@ -119,17 +128,22 @@ export function Contact() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: false, amount: 0.3 }}
               transition={{ delay: 0.1 + i * 0.08, duration: 0.6 }}
-              className="group relative flex items-center justify-between gap-3 bg-paper-100 p-6 transition-colors duration-300 hover:bg-paper-50 md:p-7"
+              className="group relative flex items-start justify-between gap-3 bg-paper-100 p-6 transition-colors duration-300 hover:bg-paper-50 md:p-7"
             >
               <div className="min-w-0">
                 <p className="text-xs uppercase tracking-[0.22em] text-ink-faint">
                   {s.label}
                 </p>
-                <p className="mt-2 truncate font-serif text-base text-ink">
-                  {s.handle}
+                <p className="mt-2 break-words font-serif text-base leading-snug text-ink">
+                  {s.parts.map((part, idx) => (
+                    <span key={idx}>
+                      {idx > 0 && <br className="hidden md:block" />}
+                      {part}
+                    </span>
+                  ))}
                 </p>
               </div>
-              <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-ink/10 text-ink-muted transition-all duration-300 group-hover:border-accent group-hover:bg-accent group-hover:text-paper-50">
+              <span className="mt-1 flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-ink/10 text-ink-muted transition-all duration-300 group-hover:-translate-y-0.5 group-hover:scale-110 group-hover:border-accent group-hover:bg-accent group-hover:text-paper-50">
                 <s.Icon size={16} />
               </span>
             </motion.a>

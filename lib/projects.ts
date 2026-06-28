@@ -21,6 +21,52 @@ export type ProjectLink = {
   type: "github" | "external";
 };
 
+/** Keys map to icons in components/IconLibrary.tsx (sourced from lucide-react). */
+export type LucideIconKey =
+  | "layout-dashboard"
+  | "bell"
+  | "calendar"
+  | "users"
+  | "shield"
+  | "bar-chart"
+  | "leaf"
+  | "sprout"
+  | "tractor"
+  | "sun"
+  | "droplet"
+  | "heart"
+  | "code"
+  | "terminal"
+  | "book-open"
+  | "play"
+  | "graduation-cap"
+  | "package"
+  | "camera"
+  | "map-pin"
+  | "flower"
+  | "search"
+  | "smartphone"
+  | "star";
+
+export type DesignSystem = {
+  /** Exactly 4 swatches sampled from the product UI */
+  colors: { name: string; hex: string }[];
+  /** Two primary typefaces: typically a display and a body face.
+   *  `face` selects the web font used to render the showcase text. */
+  fonts: { role: string; name: string; face: FontFace }[];
+  /** The icon set used on the project, plus a few representative glyphs. */
+  iconLibrary: { name: string; icons: LucideIconKey[] };
+};
+
+/** Web fonts available to render the typography showcase. */
+export type FontFace =
+  | "fraunces"
+  | "inter"
+  | "playfair"
+  | "jetbrains"
+  | "poppins"
+  | "roboto";
+
 export type Project = {
   id: string;
   title: string;
@@ -30,6 +76,7 @@ export type Project = {
   description: string;
   longDescription: string[];
   tech: TechKey[];
+  designSystem: DesignSystem;
   images: ProjectImage[];
   links?: ProjectLink[];
   /** Optional accent color override */
@@ -51,6 +98,22 @@ export const PROJECTS: Project[] = [
       "Made the whole platform work on phones, foldables, and tablets, and set up a shared design system across 40+ screens to keep everything consistent and ship faster.",
     ],
     tech: ["react", "nextjs", "typescript", "tailwind", "figma", "storybook"],
+    designSystem: {
+      colors: [
+        { name: "Plum", hex: "#2E1A47" },
+        { name: "Lilac", hex: "#B89DDB" },
+        { name: "Linen", hex: "#F4EBE1" },
+        { name: "Slate", hex: "#4B4658" },
+      ],
+      fonts: [
+        { role: "Display", name: "Fraunces", face: "fraunces" },
+        { role: "Body", name: "Inter", face: "inter" },
+      ],
+      iconLibrary: {
+        name: "Lucide",
+        icons: ["layout-dashboard", "bell", "calendar", "users", "shield"],
+      },
+    },
     images: [
       {
         src: "/projects/medguardian-landing.png",
@@ -101,13 +164,29 @@ export const PROJECTS: Project[] = [
       "Tuned it for speed and accessibility with lazy-loaded images, semantic markup, and the right image formats.",
     ],
     tech: ["react", "nextjs", "tailwind", "figma"],
+    designSystem: {
+      colors: [
+        { name: "Forest", hex: "#2F4A38" },
+        { name: "Moss", hex: "#5C7A52" },
+        { name: "Cream", hex: "#F5F1E6" },
+        { name: "Wheat", hex: "#D8C9A3" },
+      ],
+      fonts: [
+        { role: "Display", name: "Playfair Display", face: "playfair" },
+        { role: "Body", name: "Inter", face: "inter" },
+      ],
+      iconLibrary: {
+        name: "Font Awesome",
+        icons: ["leaf", "sprout", "tractor", "sun", "droplet"],
+      },
+    },
     images: [
       {
-        src: "/projects/amin-farm.png",
-        alt: "Amin Farm landing page",
+        src: "/projects/amin-farm-hero.png",
+        alt: "Amin Farm landing page hero",
         frame: "browser",
         url: "aminfarm.com",
-        cropRatio: "16/10",
+        cropRatio: "16/9",
         objectPosition: "top",
         span: "full",
       },
@@ -136,6 +215,22 @@ export const PROJECTS: Project[] = [
       "Used Docker to containerize the course environments so code runs smoothly in the browser, and helped oversee other courses on React Native, Firebase, and Unity AR.",
     ],
     tech: ["react", "fastapi", "mongodb", "docker", "python", "nodejs"],
+    designSystem: {
+      colors: [
+        { name: "Indigo", hex: "#4951F5" },
+        { name: "Violet", hex: "#8B5CF6" },
+        { name: "Ink", hex: "#1A1A2E" },
+        { name: "Mist", hex: "#EEF0FF" },
+      ],
+      fonts: [
+        { role: "Heading", name: "Inter", face: "inter" },
+        { role: "Code", name: "JetBrains Mono", face: "jetbrains" },
+      ],
+      iconLibrary: {
+        name: "Heroicons",
+        icons: ["code", "terminal", "book-open", "play", "graduation-cap"],
+      },
+    },
     images: [
       {
         src: "/projects/educative.png",
@@ -162,6 +257,22 @@ export const PROJECTS: Project[] = [
       "Led a team of three. I designed the React Native front end, connected it to a Node.js and MongoDB backend, and scraped training data with Selenium after the original API shut down. It won the FCCU 2022 Best Senior Project Poster Award.",
     ],
     tech: ["react-native", "nodejs", "mongodb", "python", "selenium", "tensorflow"],
+    designSystem: {
+      colors: [
+        { name: "Leaf", hex: "#3EA84A" },
+        { name: "Pine", hex: "#1F6B2C" },
+        { name: "Stone", hex: "#5A6B61" },
+        { name: "Sand", hex: "#E8E4DA" },
+      ],
+      fonts: [
+        { role: "Display", name: "Poppins", face: "poppins" },
+        { role: "Body", name: "Roboto", face: "roboto" },
+      ],
+      iconLibrary: {
+        name: "Ionicons",
+        icons: ["flower", "camera", "map-pin", "search", "heart"],
+      },
+    },
     links: [
       {
         label: "View on GitHub",

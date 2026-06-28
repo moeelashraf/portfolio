@@ -33,7 +33,7 @@ import {
 } from "react-icons/si";
 import { type IconType } from "react-icons";
 
-const ICON_MAP: Record<string, { Icon: IconType; color: string; label?: string }> = {
+const ICON_MAP: Record<string, { Icon: IconType; color: string; label: string }> = {
   react: { Icon: SiReact, color: "#61DAFB", label: "React" },
   "react-native": { Icon: SiReact, color: "#61DAFB", label: "React Native" },
   nextjs: { Icon: SiNextdotjs, color: "#000000", label: "Next.js" },
@@ -69,6 +69,8 @@ type TechBadgeProps = {
   tech: keyof typeof ICON_MAP;
   size?: "sm" | "md";
   showLabel?: boolean;
+  /** For the icon-only variant: force the pill open (e.g. when scrolled into view). */
+  expanded?: boolean;
   className?: string;
 };
 
@@ -76,6 +78,7 @@ export function TechBadge({
   tech,
   size = "md",
   showLabel = true,
+  expanded = false,
   className,
 }: TechBadgeProps) {
   const entry = ICON_MAP[tech];
@@ -84,35 +87,21 @@ export function TechBadge({
   const { Icon, color, label } = entry;
   const iconSize = size === "sm" ? 17 : 19;
 
-  // Icon-only badge: a circle that smoothly expands into a pill revealing the
-  // name on hover. The label width animates via a grid column track so the
+  // Icon-only badge: a circle that smoothly expands into a full pill revealing
+  // the name. It opens when `expanded` is true (driven by scroll-into-view) and
+  // also on hover. The label width animates via a grid column track so the
   // transition stays smooth without measuring text.
   if (!showLabel) {
     return (
-      <span
-        className={clsx(
-          "group inline-flex items-center rounded-full border border-ink/10 bg-paper-50/80 backdrop-blur-sm transition-[box-shadow,transform,background-color,border-color] duration-300 hover:-translate-y-0.5 hover:border-ink/25 hover:bg-paper-50 hover:shadow-soft",
-          size === "sm" ? "h-9 pl-[7px] pr-[7px] hover:pr-3" : "h-10 pl-2 pr-2 hover:pr-3.5",
-          className
-        )}
-        title={label}
-      >
-        <span className="flex shrink-0 items-center justify-center">
-          <Icon
-            className="transition-colors duration-300"
-            style={{ color }}
-            size={iconSize}
-            aria-hidden
-          />
-        </span>
-        <span className="grid grid-cols-[0fr] transition-[grid-template-columns] duration-300 ease-out group-hover:grid-cols-[1fr]">
-          <span className="overflow-hidden">
-            <span className="block whitespace-nowrap pl-2 pr-0.5 font-sans text-xs font-medium text-ink-muted opacity-0 transition-opacity duration-200 group-hover:opacity-100 group-hover:delay-100">
-              {label}
-            </span>
-          </span>
-        </span>
-      </span>
+      <IconOnlyBadge
+        Icon={Icon}
+        color={color}
+        label={label}
+        size={size}
+        iconSize={iconSize}
+        expanded={expanded}
+        className={className}
+      />
     );
   }
 
@@ -137,6 +126,55 @@ export function TechBadge({
   );
 }
 
+function IconOnlyBadge({
+  Icon,
+  color,
+  label,
+  size,
+  iconSize,
+  expanded,
+  className,
+}: {
+  Icon: IconType;
+  color: string;
+  label: string;
+  size: "sm" | "md";
+  iconSize: number;
+  expanded: boolean;
+  className?: string;
+}) {
+  return (
+    <span
+      aria-label={label}
+      title={label}
+      data-open={expanded}
+      className={clsx(
+        "group inline-flex items-center rounded-full border border-ink/10 bg-paper-50/80 backdrop-blur-sm transition-[box-shadow,transform,background-color,border-color] duration-300 hover:-translate-y-0.5 hover:border-ink/25 hover:bg-paper-50 hover:shadow-soft data-[open=true]:border-ink/25 data-[open=true]:bg-paper-50 data-[open=true]:shadow-soft",
+        size === "sm"
+          ? "h-9 pl-[7px] pr-[7px] hover:pr-3 data-[open=true]:pr-3"
+          : "h-10 pl-2 pr-2 hover:pr-3.5 data-[open=true]:pr-3.5",
+        className
+      )}
+    >
+      <span className="flex shrink-0 items-center justify-center">
+        <Icon
+          className="transition-colors duration-300"
+          style={{ color }}
+          size={iconSize}
+          aria-hidden
+        />
+      </span>
+      <span className="grid grid-cols-[0fr] transition-[grid-template-columns] duration-300 ease-out group-hover:grid-cols-[1fr] group-data-[open=true]:grid-cols-[1fr]">
+        <span className="overflow-hidden">
+          <span className="block whitespace-nowrap pl-2 pr-0.5 font-sans text-xs font-medium text-ink-muted opacity-0 transition-opacity duration-200 group-hover:opacity-100 group-hover:delay-100 group-data-[open=true]:opacity-100 group-data-[open=true]:delay-100">
+            {label}
+          </span>
+        </span>
+      </span>
+    </span>
+  );
+}
+
 export function TechIcon({
   tech,
   size = 20,
@@ -153,3 +191,7 @@ export function TechIcon({
 }
 
 export type TechKey = keyof typeof ICON_MAP;
+
+export const TECH_LABELS: Record<string, string> = Object.fromEntries(
+  Object.entries(ICON_MAP).map(([key, value]) => [key, value.label])
+);

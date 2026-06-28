@@ -2,50 +2,48 @@
 
 import {
   AnimatePresence,
-  LayoutGroup,
   motion,
   useReducedMotion,
 } from "framer-motion";
 import Image from "next/image";
 import { ArrowUpRight, Github, Plus } from "lucide-react";
-import { useState } from "react";
 import clsx from "clsx";
 
 import type { Project, ProjectImage } from "@/lib/projects";
 import { asset } from "@/lib/basePath";
 import { BrowserFrame } from "./BrowserFrame";
+import { DesignSystemPanel } from "./DesignSystemPanel";
 import { PhoneFrame } from "./PhoneFrame";
 import { TechBadge } from "./TechBadge";
 
 type ProjectCardProps = {
   project: Project;
   index: number;
-  defaultOpen?: boolean;
+  isOpen: boolean;
+  onToggle: () => void;
   onImageClick: (img: ProjectImage) => void;
 };
 
 export function ProjectCard({
   project,
   index,
-  defaultOpen = false,
+  isOpen,
+  onToggle,
   onImageClick,
 }: ProjectCardProps) {
-  const [open, setOpen] = useState(defaultOpen);
+  const open = isOpen;
   const reduce = useReducedMotion();
 
   return (
-    <LayoutGroup>
-      <motion.article
-        layout
-        transition={{ layout: { duration: 0.5, ease: [0.22, 1, 0.36, 1] } }}
-        className={clsx(
-          "group relative border-t border-ink/10 py-10 transition-colors md:py-14",
-          open && "bg-paper-200/40"
-        )}
-      >
+    <article
+      className={clsx(
+        "group relative border-t border-ink/10 py-10 transition-colors duration-500 md:py-14",
+        open && "bg-paper-200/40"
+      )}
+    >
         <button
           type="button"
-          onClick={() => setOpen((v) => !v)}
+          onClick={onToggle}
           className="container-narrow flex w-full flex-col items-start gap-6 text-left md:flex-row md:items-center md:justify-between md:gap-12"
           aria-expanded={open}
         >
@@ -63,20 +61,31 @@ export function ProjectCard({
               <p className="mt-3 max-w-2xl text-base text-ink-muted md:text-lg">
                 {project.subtitle}
               </p>
-              <div className="mt-5 flex flex-wrap items-center gap-2">
-                {project.tech.slice(0, 5).map((tech) => (
-                  <TechBadge key={tech} tech={tech} size="sm" />
-                ))}
-                {project.tech.length > 5 && (
-                  <span className="text-xs text-ink-faint">
-                    +{project.tech.length - 5} more
-                  </span>
-                )}
-              </div>
+              <TechPills tech={project.tech} />
             </div>
           </div>
 
-          <span className="flex shrink-0 items-center gap-3">
+          {/* Mobile: full-width pill action that clearly reads as tappable */}
+          <span
+            className={clsx(
+              "flex w-full items-center justify-center gap-2 rounded-full border px-5 py-3 text-sm font-medium transition-colors duration-300 md:hidden",
+              open
+                ? "border-accent bg-accent text-paper-50"
+                : "border-ink/15 bg-paper-50 text-ink"
+            )}
+          >
+            <motion.span
+              animate={{ rotate: open ? 45 : 0 }}
+              transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+              className="flex"
+            >
+              <Plus size={16} />
+            </motion.span>
+            {open ? "Close project" : "View project"}
+          </span>
+
+          {/* Desktop: label + circular icon on the right */}
+          <span className="hidden shrink-0 items-center gap-3 md:flex">
             <span
               className={clsx(
                 "text-xs uppercase tracking-[0.2em] transition-colors duration-300",
@@ -124,8 +133,8 @@ export function ProjectCard({
               className="overflow-hidden"
             >
               <div className="container-narrow pt-12">
-                <div className="grid grid-cols-1 gap-10 md:grid-cols-12 md:gap-12">
-                  <div className="md:col-span-7 lg:col-span-7">
+                <div className="grid grid-cols-1 items-stretch gap-10 md:grid-cols-12 md:gap-12">
+                  <div className="flex flex-col md:col-span-7 lg:col-span-7">
                     {project.longDescription.map((para, i) => (
                       <motion.p
                         key={i}
@@ -137,25 +146,9 @@ export function ProjectCard({
                         {para}
                       </motion.p>
                     ))}
-                  </div>
-                  <div className="md:col-span-5 lg:col-span-5">
-                    <p className="text-xs uppercase tracking-[0.22em] text-ink-faint">
-                      Role
-                    </p>
-                    <p className="mt-2 font-serif text-xl text-ink">
-                      {project.role}
-                    </p>
-                    <p className="mt-6 text-xs uppercase tracking-[0.22em] text-ink-faint">
-                      Stack
-                    </p>
-                    <div className="mt-3 flex flex-wrap gap-2">
-                      {project.tech.map((tech) => (
-                        <TechBadge key={tech} tech={tech} size="sm" />
-                      ))}
-                    </div>
 
                     {project.links && project.links.length > 0 && (
-                      <div className="mt-6 flex flex-wrap gap-3">
+                      <div className="mt-auto flex flex-wrap gap-3 pt-2">
                         {project.links.map((link) => (
                           <a
                             key={link.href}
@@ -175,6 +168,10 @@ export function ProjectCard({
                       </div>
                     )}
                   </div>
+
+                  <div className="md:col-span-5 lg:col-span-5">
+                    <DesignSystemPanel system={project.designSystem} />
+                  </div>
                 </div>
 
                 <ProjectGallery
@@ -186,8 +183,39 @@ export function ProjectCard({
             </motion.div>
           )}
         </AnimatePresence>
-      </motion.article>
-    </LayoutGroup>
+    </article>
+  );
+}
+
+function TechPills({ tech }: { tech: Project["tech"] }) {
+  const visible = tech.slice(0, 5);
+  const hidden = tech.slice(5);
+
+  return (
+    <div className="mt-5 flex flex-wrap items-center gap-2">
+      {visible.map((t) => (
+        <TechBadge key={t} tech={t} size="sm" />
+      ))}
+
+      {hidden.length > 0 && (
+        <>
+          {/* Hidden pills reveal on card hover */}
+          <div className="grid grid-cols-[0fr] transition-[grid-template-columns] duration-500 ease-out group-hover:grid-cols-[1fr]">
+            <div className="overflow-hidden">
+              <div className="flex flex-nowrap items-center gap-2 pl-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+                {hidden.map((t) => (
+                  <TechBadge key={t} tech={t} size="sm" />
+                ))}
+              </div>
+            </div>
+          </div>
+          {/* "+N more" hint, hides on hover once the pills appear */}
+          <span className="text-xs text-ink-faint transition-opacity duration-200 group-hover:pointer-events-none group-hover:opacity-0">
+            +{hidden.length} more
+          </span>
+        </>
+      )}
+    </div>
   );
 }
 
