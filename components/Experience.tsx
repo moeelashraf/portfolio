@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import Image from "next/image";
-import { Maximize2 } from "lucide-react";
+import { ArrowUpRight, Maximize2 } from "lucide-react";
 import { useState } from "react";
 import { EXPERIENCES, type Experience as ExperienceType } from "@/lib/experience";
 import { asset } from "@/lib/basePath";
@@ -131,35 +131,69 @@ function ExperienceCard({
                   />
                 ))}
               </div>
+
+              {/* Mobile/tablet fallback: thumbnail is hidden below lg, so surface
+                  the website link inline here instead. */}
+              {exp.link && (
+                <a
+                  href={exp.link.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group/link mt-6 inline-flex items-center gap-1.5 text-sm font-medium text-ink transition-colors duration-300 hover:text-accent lg:hidden"
+                >
+                  {exp.link.label}
+                  <ArrowUpRight
+                    size={15}
+                    className="transition-transform duration-300 group-hover/link:translate-x-0.5 group-hover/link:-translate-y-0.5"
+                  />
+                </a>
+              )}
             </div>
 
             {exp.thumbnail && (
-              <button
-                type="button"
-                onClick={() =>
-                  onThumbnailClick({
-                    src: exp.thumbnail!.src,
-                    alt: exp.thumbnail!.alt,
-                  })
-                }
-                aria-label={`View ${exp.thumbnail.alt}`}
-                className="group/thumb relative hidden w-40 shrink-0 overflow-hidden rounded-lg border border-ink/10 shadow-soft transition-all duration-300 hover:-translate-y-0.5 hover:shadow-card lg:block"
-              >
-                <div className="relative aspect-[4/5]">
-                  <Image
-                    src={asset(exp.thumbnail.src)}
-                    alt={exp.thumbnail.alt}
-                    fill
-                    sizes="160px"
-                    className="object-cover object-top"
-                  />
-                  <span className="absolute inset-0 flex items-center justify-center bg-ink/0 opacity-0 transition-all duration-300 group-hover/thumb:bg-ink/35 group-hover/thumb:opacity-100">
-                    <span className="flex h-9 w-9 items-center justify-center rounded-full bg-paper-50/90 text-ink shadow-soft">
-                      <Maximize2 size={16} />
+              <div className="hidden w-40 shrink-0 flex-col gap-3 lg:flex">
+                <button
+                  type="button"
+                  onClick={() =>
+                    onThumbnailClick({
+                      src: exp.thumbnail!.src,
+                      alt: exp.thumbnail!.alt,
+                    })
+                  }
+                  aria-label={`View ${exp.thumbnail.alt}`}
+                  className="group/thumb relative block overflow-hidden rounded-lg border border-ink/10 shadow-soft transition-all duration-300 hover:-translate-y-0.5 hover:shadow-card"
+                >
+                  <div className="relative aspect-[4/5]">
+                    <Image
+                      src={asset(exp.thumbnail.src)}
+                      alt={exp.thumbnail.alt}
+                      fill
+                      sizes="160px"
+                      className="object-cover object-top"
+                    />
+                    <span className="absolute inset-0 flex items-center justify-center bg-ink/0 opacity-0 transition-all duration-300 group-hover/thumb:bg-ink/35 group-hover/thumb:opacity-100">
+                      <span className="flex h-9 w-9 items-center justify-center rounded-full bg-paper-50/90 text-ink shadow-soft">
+                        <Maximize2 size={16} />
+                      </span>
                     </span>
-                  </span>
-                </div>
-              </button>
+                  </div>
+                </button>
+
+                {exp.link && (
+                  <a
+                    href={exp.link.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group/link inline-flex items-center justify-center gap-1.5 rounded-full border border-ink/15 bg-paper-50 px-3 py-2 text-sm font-medium text-ink transition-colors duration-300 hover:border-accent hover:text-accent"
+                  >
+                    {exp.link.label}
+                    <ArrowUpRight
+                      size={14}
+                      className="transition-transform duration-300 group-hover/link:translate-x-0.5 group-hover/link:-translate-y-0.5"
+                    />
+                  </a>
+                )}
+              </div>
             )}
           </div>
         </div>

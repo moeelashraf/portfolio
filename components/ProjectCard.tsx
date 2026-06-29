@@ -6,7 +6,7 @@ import {
   useReducedMotion,
 } from "framer-motion";
 import Image from "next/image";
-import { ArrowUpRight, Github, Plus } from "lucide-react";
+import { ArrowUpRight, Github, Play, Plus } from "lucide-react";
 import { useLayoutEffect, useRef } from "react";
 import clsx from "clsx";
 
@@ -172,6 +172,20 @@ export function ProjectCard({
               <div className="container-narrow pt-12">
                 <div className="grid grid-cols-1 items-stretch gap-10 md:grid-cols-12 md:gap-12">
                   <div className="flex flex-col md:col-span-7 lg:col-span-7">
+                    <motion.div
+                      initial={{ opacity: 0, y: 12 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.18, duration: 0.6 }}
+                      className="mb-6"
+                    >
+                      <p className="text-xs uppercase tracking-[0.2em] text-ink-faint">
+                        Role
+                      </p>
+                      <p className="mt-1.5 text-base font-medium text-ink md:text-lg">
+                        {project.role}
+                      </p>
+                    </motion.div>
+
                     {project.longDescription.map((para, i) => (
                       <motion.p
                         key={i}
@@ -192,10 +206,17 @@ export function ProjectCard({
                             href={link.href}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="group/link inline-flex items-center gap-2 rounded-full bg-ink px-4 py-2.5 text-sm font-medium text-paper-50 transition-all duration-300 hover:bg-accent"
+                            className={clsx(
+                              "group/link inline-flex items-center gap-2 rounded-full px-4 py-2.5 text-sm font-medium transition-all duration-300",
+                              link.type === "demo"
+                                ? "bg-accent text-paper-50 hover:opacity-90"
+                                : "bg-ink text-paper-50 hover:bg-accent"
+                            )}
                           >
                             {link.type === "github" ? (
                               <Github size={15} />
+                            ) : link.type === "demo" ? (
+                              <Play size={15} className="fill-current" />
                             ) : (
                               <ArrowUpRight size={15} />
                             )}

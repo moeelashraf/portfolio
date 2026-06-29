@@ -10,6 +10,8 @@ export type Experience = {
   highlights: string[];
   tech: TechKey[];
   thumbnail?: { src: string; alt: string };
+  /** Optional external link (e.g. the company's live product/site) */
+  link?: { label: string; href: string };
 };
 
 export const EXPERIENCES: Experience[] = [
@@ -32,6 +34,10 @@ export const EXPERIENCES: Experience[] = [
     thumbnail: {
       src: "/projects/medguardian-dashboard.png",
       alt: "Guardian IQ dashboard",
+    },
+    link: {
+      label: "Visit website",
+      href: "https://www.medicalguardian.com/",
     },
   },
   {
@@ -74,6 +80,10 @@ export const EXPERIENCES: Experience[] = [
     thumbnail: {
       src: "/projects/educative.png",
       alt: "Educative course",
+    },
+    link: {
+      label: "Visit website",
+      href: "https://www.educative.io/",
     },
   },
 ];

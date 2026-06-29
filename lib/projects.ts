@@ -18,7 +18,7 @@ export type ProjectImage = {
 export type ProjectLink = {
   label: string;
   href: string;
-  type: "github" | "external";
+  type: "github" | "external" | "demo";
 };
 
 /** Identifies which real icon library renders the representative glyphs.
@@ -241,6 +241,11 @@ export const PROJECTS: Project[] = [
       iconLibrary: { name: "Ionicons", set: "ionicons" },
     },
     links: [
+      {
+        label: "View demo",
+        href: "https://drive.google.com/file/d/1mlKLfhW2lcMzX3lFgJtzWLz0iqKXvvGL/view?usp=sharing",
+        type: "demo",
+      },
       {
         label: "View on GitHub",
         href: "https://github.com/MoeelAsh/helloPlant",
